@@ -1,0 +1,66 @@
+# Wiresploit VM — USB serial / JTAG / ESP / SDR access without sudo
+# Installed to: /etc/udev/rules.d/99-wiresploit-hw.rules
+# Groups used: dialout, plugdev
+#
+# Reload after changes:
+#   sudo udevadm control --reload-rules && sudo udevadm trigger
+
+# ---------- FTDI (UART / JTAG, common debug adapters) ----------
+SUBSYSTEM=="usb", ATTR{idVendor}=="0403", MODE="0666", GROUP="plugdev"
+SUBSYSTEM=="tty", ATTRS{idVendor}=="0403", MODE="0666", GROUP="dialout"
+
+# ---------- WCH CH340 / CH341 (cheap USB-UART, many ESP boards) ----------
+SUBSYSTEM=="usb", ATTR{idVendor}=="1a86", MODE="0666", GROUP="plugdev"
+SUBSYSTEM=="tty", ATTRS{idVendor}=="1a86", MODE="0666", GROUP="dialout"
+
+# ---------- Silicon Labs CP210x (ESP32 DevKit, etc.) ----------
+SUBSYSTEM=="usb", ATTR{idVendor}=="10c4", MODE="0666", GROUP="plugdev"
+SUBSYSTEM=="tty", ATTRS{idVendor}=="10c4", MODE="0666", GROUP="dialout"
+
+# ---------- Prolific PL2303 ----------
+SUBSYSTEM=="usb", ATTR{idVendor}=="067b", MODE="0666", GROUP="plugdev"
+SUBSYSTEM=="tty", ATTRS{idVendor}=="067b", MODE="0666", GROUP="dialout"
+
+# ---------- Espressif USB (ESP32-S2/S3/C3 native USB / JTAG) ----------
+SUBSYSTEM=="usb", ATTR{idVendor}=="303a", MODE="0666", GROUP="plugdev"
+SUBSYSTEM=="tty", ATTRS{idVendor}=="303a", MODE="0666", GROUP="dialout"
+
+# ---------- ST-Link (STM32) ----------
+SUBSYSTEM=="usb", ATTR{idVendor}=="0483", ATTR{idProduct}=="3748", MODE="0666", GROUP="plugdev"
+SUBSYSTEM=="usb", ATTR{idVendor}=="0483", ATTR{idProduct}=="374b", MODE="0666", GROUP="plugdev"
+SUBSYSTEM=="usb", ATTR{idVendor}=="0483", ATTR{idProduct}=="374f", MODE="0666", GROUP="plugdev"
+SUBSYSTEM=="usb", ATTR{idVendor}=="0483", ATTR{idProduct}=="3752", MODE="0666", GROUP="plugdev"
+
+# ---------- SEGGER J-Link ----------
+SUBSYSTEM=="usb", ATTR{idVendor}=="1366", MODE="0666", GROUP="plugdev"
+
+# ---------- CMSIS-DAP / DAPLink / ARM ----------
+SUBSYSTEM=="usb", ATTR{idVendor}=="0d28", ATTR{idProduct}=="0204", MODE="0666", GROUP="plugdev"
+SUBSYSTEM=="usb", ATTR{idVendor}=="c251", MODE="0666", GROUP="plugdev"
+
+# ---------- Black Magic Probe ----------
+SUBSYSTEM=="usb", ATTR{idVendor}=="1d50", ATTR{idProduct}=="6018", MODE="0666", GROUP="plugdev"
+SUBSYSTEM=="tty", ATTRS{idVendor}=="1d50", ATTRS{idProduct}=="6018", MODE="0666", GROUP="dialout"
+
+# ---------- OpenOCD / generic USB-JTAG (busblaster, etc.) ----------
+SUBSYSTEM=="usb", ATTR{idVendor}=="09fb", MODE="0666", GROUP="plugdev"
+
+# ---------- RTL-SDR (Realtek RTL2832U dongles) ----------
+SUBSYSTEM=="usb", ATTR{idVendor}=="0bda", ATTR{idProduct}=="2832", MODE="0666", GROUP="plugdev"
+SUBSYSTEM=="usb", ATTR{idVendor}=="0bda", ATTR{idProduct}=="2838", MODE="0666", GROUP="plugdev"
+
+# ---------- HackRF ----------
+SUBSYSTEM=="usb", ATTR{idVendor}=="1d50", ATTR{idProduct}=="6089", MODE="0666", GROUP="plugdev"
+
+# ---------- BladeRF ----------
+SUBSYSTEM=="usb", ATTR{idVendor}=="2cf0", MODE="0666", GROUP="plugdev"
+
+# ---------- LimeSDR ----------
+SUBSYSTEM=="usb", ATTR{idVendor}=="1d50", ATTR{idProduct}=="6108", MODE="0666", GROUP="plugdev"
+
+# ---------- Airspy ----------
+SUBSYSTEM=="usb", ATTR{idVendor}=="1d50", ATTR{idProduct}=="60a1", MODE="0666", GROUP="plugdev"
+
+# ---------- Generic: USB serial devices node permissions ----------
+KERNEL=="ttyUSB[0-9]*", MODE="0666", GROUP="dialout"
+KERNEL=="ttyACM[0-9]*", MODE="0666", GROUP="dialout"
